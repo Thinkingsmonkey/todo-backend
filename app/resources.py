@@ -62,7 +62,7 @@ class MemberResetAPI(Resource):
             db.session.commit()
             return {"message": "ok"}, 200
         else: 
-            return {"message": "Email does not exist"}
+            return abort(400, "Email does not exist")
 
 @nspace.route("/members/<int:id>/tasks")
 class Protected(Resource):
