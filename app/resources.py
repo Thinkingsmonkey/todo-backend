@@ -12,12 +12,10 @@ from flask import jsonify, abort
 # 類似 blueprint 設一個 url_prefix = "/api" 的意思
 nspace = Namespace("api")
 
-
 @nspace.route("/member/register")
 class MemberRegisterAPI(Resource):
     
     @nspace.expect(member_input_model)
-    @nspace.marshal_with(member_output_model)
     def post(self):
         if Member.query.filter_by(username=nspace.payload["username"]).first():
             response = {"message": "username has been used"}
@@ -27,7 +25,7 @@ class MemberRegisterAPI(Resource):
         member = Member(username=nspace.payload["username"], email=nspace.payload["email"], password_hash=password_hash, salt=salt)
         db.session.add(member)
         db.session.commit()
-        return member, 201
+        return 201
 
 @nspace.route("/member/login")
 class MemberLoginAPI(Resource):

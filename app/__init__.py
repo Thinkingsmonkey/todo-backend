@@ -1,8 +1,7 @@
 from flask import Flask
-from .extensions import api, db, jwt
+from .extensions import api, db, jwt, cors
 from .resources import nspace
 from .models import Member
-from flask_cors import CORS
 from .config import Config
 
 def create_app():
@@ -12,8 +11,7 @@ def create_app():
     api.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-    CORS(app, supports_credentials=True)
-
+    cors.init_app(app)
     
     # 在創建 JWT 時將傳入的使用者物件( SQLAlchemy 的物件)，轉化為 JSON
     # 回傳將成為 indentity 身分訊息放進 JSON 中一起被轉化
@@ -30,3 +28,6 @@ def create_app():
 
     api.add_namespace(nspace)
     return app
+
+if __name__ == "__main__":
+    create_app().run(debug=True)
