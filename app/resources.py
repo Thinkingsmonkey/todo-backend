@@ -37,9 +37,9 @@ class MemberLoginAPI(Resource):
     def post(self):
         member = Member.query.filter_by(username=nspace.payload["username"]).first()
         if not member:
-            return {"error": "User dose not exist"}, 401
+            return {"message": "User dose not exist"}, 401
         if not check_password_hash(member.password_hash, nspace.payload["password"] + member.salt):
-            return {"error": "Incorrect password"}, 401
+            return {"message": "Incorrect password"}, 401
         member_data = {"username": member.username, "id": member.id}
         access_token = create_access_token(identity=member, additional_claims=member_data)
         refresh_token = create_refresh_token(identity=member)
