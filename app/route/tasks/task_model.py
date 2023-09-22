@@ -1,18 +1,28 @@
 from ...extensions import db
 from ...models import Task
 
-def deleteTask(id):
-  task = Task.query.get(id)
+def get_task_by_id(id):
+  return Task.query.get(id)
+
+
+def delete_task(task):
   db.session.delete(task)
   db.session.commit()
 
-def addTask(newTask):
+def add_task(newTask):
   task = Task(**newTask)
   db.session.add(task)    # 將物件加入到資料庫會話中
   db.session.commit()  
   return task
 
-def getNewTask(tasks_ns):
+def update_task(task, new_task):
+  for key, value in new_task.items():
+    if value is not None:
+      setattr(task, key, value)
+  db.session.commit()
+  return task
+
+def get_new_task(tasks_ns):
   return {
       "member_id": tasks_ns.payload.get("member_id"),
       "title": tasks_ns.payload.get("title"),
