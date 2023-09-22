@@ -77,53 +77,53 @@ class Protected(Resource):
         return memberTasksById
 
 
-@nspace.route("/tasks/<int:id>")
-class TaskAPI(Resource):
+# @nspace.route("/tasks/<int:id>")
+# class TaskAPI(Resource):
 
-    @jwt_required()
-    def delete(self, id):
-        task = Task.query.get(id)
-        db.session.delete(task)
-        db.session.commit()
-        return {}, 204
+#     @jwt_required()
+#     def delete(self, id):
+#         task = Task.query.get(id)
+#         db.session.delete(task)
+#         db.session.commit()
+#         return {}, 204
 
-    @jwt_required()
-    @nspace.expect(task_update_model)
-    @nspace.marshal_with(task_model)
-    def put(self, id):
-        task = Task.query.get(id)
-        newTask = {
-            "member_id": nspace.payload.get("member_id"),
-            "title": nspace.payload.get("title"),
-            "priority": nspace.payload.get("priority"),
-            "state": nspace.payload.get("state"),
-            "start": nspace.payload.get("start"),
-            "deadline": nspace.payload.get("deadline"),
-            "description": nspace.payload.get("description")
-        }
-        for key, value in newTask.items():
-            if value is not None:
-                setattr(task, key, value)
-        db.session.commit()
-        return task, 200
+#     @jwt_required()
+#     @nspace.expect(task_update_model)
+#     @nspace.marshal_with(task_model)
+#     def put(self, id):
+#         task = Task.query.get(id)
+#         newTask = {
+#             "member_id": nspace.payload.get("member_id"),
+#             "title": nspace.payload.get("title"),
+#             "priority": nspace.payload.get("priority"),
+#             "state": nspace.payload.get("state"),
+#             "start": nspace.payload.get("start"),
+#             "deadline": nspace.payload.get("deadline"),
+#             "description": nspace.payload.get("description")
+#         }
+#         for key, value in newTask.items():
+#             if value is not None:
+#                 setattr(task, key, value)
+#         db.session.commit()
+#         return task, 200
 
-@nspace.route("/tasks")
-class TaskListAPI(Resource):
+# @nspace.route("/tasks")
+# class TaskListAPI(Resource):
 
-    @jwt_required()
-    @nspace.expect(task_model)
-    @nspace.marshal_with(task_model)
-    def post(self):
-        newTask = {
-            "member_id": nspace.payload.get("member_id"),
-            "title": nspace.payload.get("title"),
-            "priority": nspace.payload.get("priority"),
-            "state": nspace.payload.get("state"),
-            "start": nspace.payload.get("start"),
-            "deadline": nspace.payload.get("deadline"), 
-            "description": nspace.payload.get("description") # 前端若傳送預設的空字串(text 無法設定預設值)
-        }
-        task = Task(**newTask)
-        db.session.add(task)    # 將物件加入到資料庫會話中
-        db.session.commit()  
-        return task
+#     @jwt_required()
+#     @nspace.expect(task_model)
+#     @nspace.marshal_with(task_model)
+#     def post(self):
+#         newTask = {
+#             "member_id": nspace.payload.get("member_id"),
+#             "title": nspace.payload.get("title"),
+#             "priority": nspace.payload.get("priority"),
+#             "state": nspace.payload.get("state"),
+#             "start": nspace.payload.get("start"),
+#             "deadline": nspace.payload.get("deadline"), 
+#             "description": nspace.payload.get("description") # 前端若傳送預設的空字串(text 無法設定預設值)
+#         }
+#         task = Task(**newTask)
+#         db.session.add(task)    # 將物件加入到資料庫會話中
+#         db.session.commit()  
+#         return task

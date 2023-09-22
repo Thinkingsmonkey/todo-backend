@@ -1,6 +1,7 @@
 from flask import Flask
 from .extensions import api, db, jwt, cors
 from .resources import nspace
+from .route.tasks.tasks_controller import tasks_ns
 from .models import Member
 from .config import Config
 
@@ -27,6 +28,7 @@ def create_app():
         return Member.query.filter_by(id=identity).first()
 
     api.add_namespace(nspace)
+    api.add_namespace(tasks_ns)
     return app
 
 if __name__ == "__main__":
