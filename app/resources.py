@@ -60,7 +60,7 @@ class MemberResetAPI(Resource):
             db.session.commit()
             return {"message": "ok"}, 200
         else: 
-            return {"message": "Email does not exist"}
+            return abort(400, "Email does not exist")
 
 @nspace.route("/members/<int:id>/tasks")
 class Protected(Resource):
@@ -79,7 +79,6 @@ class TaskAPI(Resource):
 
     @jwt_required()
     def delete(self, id):
-        #! 可增加 error handle
         task = Task.query.get(id)
         db.session.delete(task)
         db.session.commit()
@@ -89,7 +88,6 @@ class TaskAPI(Resource):
     @nspace.expect(task_update_model)
     @nspace.marshal_with(task_model)
     def put(self, id):
-        #! 可增加 error handle
         task = Task.query.get(id)
         newTask = {
             "member_id": nspace.payload.get("member_id"),
