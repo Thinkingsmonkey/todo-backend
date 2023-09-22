@@ -3,7 +3,7 @@ from flask_jwt_extended import jwt_required
 from ...extensions import db
 from ...models import Task
 from ...api_models import task_update_model, task_model
-
+from .task_model import *
 tasks_ns = Namespace("api/tasks")
 
 
@@ -12,9 +12,7 @@ class TaskAPI(Resource):
 
     @jwt_required()
     def delete(self, id):
-        task = Task.query.get(id)
-        db.session.delete(task)
-        db.session.commit()
+        deleteTask(id)
         return {}, 204
 
     @jwt_required()
