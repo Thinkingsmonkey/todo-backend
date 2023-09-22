@@ -18,7 +18,10 @@ class MemberRegisterAPI(Resource):
     @nspace.expect(member_input_model)
     def post(self):
         if Member.query.filter_by(username=nspace.payload["username"]).first():
-            response = {"message": "username has been used"}
+            response = {"message": "Username has been used"}
+            return response, 401
+        if Member.query.filter_by(username=nspace.payload["email"]).first():
+            response = {"message": "Email has been used"}
             return response, 401
         salt = generate_salt()
         password_hash = generate_password_hash(nspace.payload["password"]+ salt)
