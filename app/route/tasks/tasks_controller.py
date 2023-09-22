@@ -37,7 +37,7 @@ class TaskAPI(Resource):
         db.session.commit()
         return task, 200
 
-@tasks_ns.route("/")
+@tasks_ns.route("")
 class TaskListAPI(Resource):
 
     @jwt_required()
