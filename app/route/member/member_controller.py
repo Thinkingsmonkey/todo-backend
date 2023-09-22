@@ -9,6 +9,8 @@ from ...api_models import *
 from ...models import generate_salt, Member
 from flask import jsonify, abort
 
+from .member_model import *
+
 # 類似 blueprint 設一個 url_prefix = "/api" 的意思
 member_ns = Namespace("api")
 
@@ -71,8 +73,8 @@ class Protected(Resource):
     @jwt_required()
     @member_ns.marshal_with(task_model)
     def get(self, id):
-        member = Member.query.filter_by(id=id).first()
+        member = get_member_by_id(id)
         if not member: abort(400, "Member not found")
-        memberTasksById = member.tasks
-        return memberTasksById
+        memberTasks = get_member_tasks(member)
+        return memberTasks
 
