@@ -6,4 +6,4 @@ from flask_cors import CORS
 api = Api() # 創建 restx 的 Api 實例，用以被調用
 db = SQLAlchemy() # 創建 sqlalchem 實例，用以被調用
 jwt = JWTManager() # 創建 jwt 實例，可被調用
-cors = CORS(supports_credentials=True)
+cors = CORS(supports_credentials=True) 
