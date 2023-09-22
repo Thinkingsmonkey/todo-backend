@@ -56,13 +56,11 @@ class MemberResetAPI(Resource):
     @member_ns.expect(reset_input_model)
     @member_ns.marshal_with(reset_output_model)
     def post(self):
-        member = Member.query.filter_by(email=member_ns.payload["email"]).first()
+        member = get_member_by_email(member_ns.payload["email"])
         if member:
             salt = generate_salt()
             password_hash = generate_password_hash(member_ns.payload["password"]+ salt)
-            member.password_hash = password_hash
-            member.salt = salt
-            db.session.commit()
+            update_member_password_salt(member, password_hash, salt)
             return {"message": "ok"}, 200
         else: 
             return abort(400, "Email does not exist")
