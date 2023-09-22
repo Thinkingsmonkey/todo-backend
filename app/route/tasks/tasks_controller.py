@@ -42,16 +42,6 @@ class TaskListAPI(Resource):
     @tasks_ns.expect(task_model)
     @tasks_ns.marshal_with(task_model)
     def post(self):
-        newTask = {
-            "member_id": tasks_ns.payload.get("member_id"),
-            "title": tasks_ns.payload.get("title"),
-            "priority": tasks_ns.payload.get("priority"),
-            "state": tasks_ns.payload.get("state"),
-            "start": tasks_ns.payload.get("start"),
-            "deadline": tasks_ns.payload.get("deadline"), 
-            "description": tasks_ns.payload.get("description") # 前端若傳送預設的空字串(text 無法設定預設值)
-        }
-        task = Task(**newTask)
-        db.session.add(task)    # 將物件加入到資料庫會話中
-        db.session.commit()  
+        newTask = getNewTask(tasks_ns)
+        task = addTask(newTask)
         return task
