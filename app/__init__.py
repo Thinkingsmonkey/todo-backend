@@ -1,6 +1,6 @@
 from flask import Flask
 from .extensions import api, db, jwt, cors
-from .resources import nspace
+from .route.member.member_controller import member_ns
 from .route.tasks.tasks_controller import tasks_ns
 from .models import Member
 from .config import Config
@@ -27,7 +27,7 @@ def create_app():
         identity = jwt_payload["sub"]
         return Member.query.filter_by(id=identity).first()
 
-    api.add_namespace(nspace)
+    api.add_namespace(member_ns)
     api.add_namespace(tasks_ns)
     return app
 
