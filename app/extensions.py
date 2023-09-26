@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 
 # 創建實例
-api = Api() 
+api = Api(title='Todo', doc='/doc') 
 db = SQLAlchemy() 
 jwt = JWTManager() 
 cors = CORS(supports_credentials=True) 

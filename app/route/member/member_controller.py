@@ -5,30 +5,28 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_csrf_token
 from werkzeug.security import generate_password_hash, check_password_hash
 from ...api_models import *
-from ...models import generate_salt
 from flask import jsonify, abort
 from .member_model import *
 
-# 類似 blueprint 設一個 url_prefix = "/api" 的意思
-member_ns = Namespace("api")
+member_ns = Namespace(name="Member", path="/api/member")
 
-@member_ns.route("/member/register")
+@member_ns.route("/register")
 class MemberRegisterAPI(Resource):
     
-    @member_ns.expect(member_input_model)
+    @member_ns.expect(member_register_model)
     def post(self):
         if get_member_by_username(member_ns.payload["username"]):
             response = {"message": "Username has been used"}
-            return response, 401
+            return response, 409
         if get_member_by_email(member_ns.payload["email"]):
             response = {"message": "Email has been used"}
-            return response, 401
+            return response, 409
         salt = generate_salt()
         password_hash = generate_password_hash(member_ns.payload["password"]+ salt)
         addMember(member_ns.payload["username"], member_ns.payload["email"], password_hash, salt)
         return 201
 
-@member_ns.route("/member/login")
+@member_ns.route("/login")
 class MemberLoginAPI(Resource):
     
     @member_ns.expect(member_login_model)
@@ -52,7 +50,7 @@ class MemberLoginAPI(Resource):
         set_refresh_cookies(response, refresh_token)
         return response
     
-@member_ns.route("/member/reset")
+@member_ns.route("/reset")
 class MemberResetAPI(Resource):
 
     @member_ns.expect(reset_input_model)
@@ -67,11 +65,11 @@ class MemberResetAPI(Resource):
         else: 
             return abort(400, "Email does not exist")
 
-@member_ns.route("/members/<int:id>/tasks")
+@member_ns.route("/<int:id>/tasks")
 class Protected(Resource):
 
     @jwt_required()
-    @member_ns.marshal_with(task_model)
+    @member_ns.marshal_with(task_model, as_list=True)
     def get(self, id):
         member = get_member_by_id(id)
         if not member: abort(400, "Member not found")

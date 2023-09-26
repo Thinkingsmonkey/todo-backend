@@ -21,7 +21,7 @@ def update_task(task, new_task):
   db.session.commit()
   return task
 
-def get_new_task(tasks_ns):
+def get_task_data(tasks_ns):
   return {
       "member_id": tasks_ns.payload.get("member_id"),
       "title": tasks_ns.payload.get("title"),

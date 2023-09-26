@@ -1,5 +1,4 @@
 from .extensions import db 
-import secrets
 from sqlalchemy import func
 from datetime import datetime, timedelta
 
@@ -21,7 +20,3 @@ class Task(db.Model):
     deadline = db.Column(db.DateTime, default=datetime.now() + timedelta(days=1))
     description = db.Column(db.Text, default="")
     member = db.relationship("Member", back_populates="tasks")
-
-
-def generate_salt():
-    return secrets.token_hex(16)

@@ -1,5 +1,9 @@
 from ...models import Member
 from ...extensions import db
+import secrets
+
+def generate_salt():
+  return secrets.token_hex(16)
 
 def get_member_by_id(id):
   return Member.query.filter_by(id=id).first()
