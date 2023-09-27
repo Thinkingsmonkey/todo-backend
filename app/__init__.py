@@ -9,10 +9,10 @@ def create_app():
     application = Flask(__name__)
     app = application
     app.config.from_object(Config)
+    cors.init_app(app)
     api.init_app(app)
     db.init_app(app)
     jwt.init_app(app)
-    cors.init_app(app)
     
     # 在創建 JWT 時將傳入的使用者物件( SQLAlchemy 的物件)，轉化為 JSON
     # 回傳將成為 indentity 身分訊息放進 JSON 中一起被轉化

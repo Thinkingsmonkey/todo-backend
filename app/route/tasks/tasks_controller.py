@@ -8,7 +8,7 @@ tasks_ns = Namespace(name="Task", path="/api/tasks")
 @tasks_ns.route("/<int:id>")
 class TaskAPI(Resource):
 
-    # @jwt_required()
+    @jwt_required()
     def delete(self, id):
         "Delete Task"
         task = get_task_by_id(id)
@@ -17,7 +17,7 @@ class TaskAPI(Resource):
         delete_task(task)
         return {}, 204
 
-    # @jwt_required()
+    @jwt_required()
     @tasks_ns.expect(task_update_model)
     @tasks_ns.marshal_with(task_model)
     def put(self, id):
@@ -30,7 +30,7 @@ class TaskAPI(Resource):
 @tasks_ns.route("") 
 class TaskListAPI(Resource):
 
-    # @jwt_required()
+    @jwt_required()
     @tasks_ns.expect(task_model)
     @tasks_ns.marshal_with(task_model)
     def post(self):

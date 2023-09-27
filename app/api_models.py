@@ -37,7 +37,7 @@ task_model = api.model("Task", {
     "description": fields.String(required=False)
 })
 task_update_model = api.model("TaskUpdate", {
-    # "id": fields.Integer,
+    "id": fields.Integer,
     "member_id": fields.Integer,
     "title": fields.String,
     "priority": fields.String(required=False),
